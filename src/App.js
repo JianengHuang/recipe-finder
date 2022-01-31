@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import Axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
-import './Home.css';
+import './App.css';
 import Recipe from './components/Recipe';
 import Alert from './components/Alert';
-import Config from './Config'
-
-const Home = () => {
+console.log(process.env);
+const App = () => {
   const [inputField, setInputField] = useState([{ ingredient: '' }]);
   const [recipes, setRecipes] = useState([]);
   const [alert, setAlert] = useState('Enter the ingredients you want to use: ');
@@ -45,8 +44,8 @@ const Home = () => {
   };
 
   const getData = async (ingredients) => {
-    const API_ID = Config.API_ID;
-    const API_KEY = Config.API_KEY;
+    const API_ID = process.env.REACT_APP_API_ID;
+    const API_KEY = process.env.REACT_APP_API_KEY;
     const deviation = '2-3';
     const url = `https://api.edamam.com/api/recipes/v2?type=public&q=${ingredients}&app_id=${API_ID}&app_key=${API_KEY}&ingr=${deviation}`;
     const result = await Axios.get(url).catch(function (error) {
@@ -100,4 +99,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default App;
