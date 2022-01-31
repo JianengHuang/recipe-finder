@@ -3,6 +3,7 @@ import Axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import './App.css';
 import Recipe from './components/Recipe';
+// import DietData from './components/DietData';
 
 const App = () => {
   const [inputField, setInputField] = useState([{ ingredient: '' }]);
@@ -25,6 +26,10 @@ const App = () => {
     values[index][event.target.name] = event.target.value;
     setInputField(values);
   };
+
+  // const handleChangeDiet = (camelCaseName) => {
+  //   setDiet({ ...diet, camelCaseName: !camelCaseName });
+  // };
 
   const handleSearch = (event) => {
     if (inputField.length > 0 && inputField[0].ingredient !== '') {
@@ -77,6 +82,7 @@ const App = () => {
         dietString += `&diet=${x}`;
       }
     }
+    console.log(dietString);
   };
 
   const getData = async (ingredients) => {
@@ -100,7 +106,7 @@ const App = () => {
     <>
       <div className='container'>
         <form>
-          {alert}
+          <h2>{alert}</h2>
           {inputField.map((inputField, index) => {
             return (
               <div key={index} className='input'>
@@ -128,8 +134,24 @@ const App = () => {
         </form>
       </div>
       <div className='Advanced-Filter'>
+        <h2>Advanced Filter (Optional)</h2>
         <form className='diet-form'>
           <h3 className='filter-tag'>Diet</h3>
+          {/* {DietData.map((dietInfo) => {
+            const { name, camelCaseName, boolean } = dietInfo;
+            return (
+              <label>
+                <input
+                  type='checkbox'
+                  name={name}
+                  onChange={() =>
+                    handleChangeDiet(camelCaseName)
+                  }
+                ></input>
+                {dietInfo.name}
+              </label>
+            );
+          })} */}
           <label>
             <input
               type='checkbox'
@@ -187,7 +209,9 @@ const App = () => {
       </label>
       <div className='recipes'>
         {recipes !== [] &&
-          recipes.map((recipe) => <Recipe key={uuidv4()} recipe={recipe} defaultShow={defaultShow} />)}
+          recipes.map((recipe) => (
+            <Recipe key={uuidv4()} recipe={recipe} defaultShow={defaultShow} />
+          ))}
       </div>
     </>
   );
