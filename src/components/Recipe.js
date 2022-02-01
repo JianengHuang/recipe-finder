@@ -4,7 +4,6 @@ import './Recipe.css';
 
 const Recipe = (props) => {
   const [show, setShow] = useState(props.defaultShow);
-  const [prepTime, setPrepTime] = useState('');
   const {
     label,
     image,

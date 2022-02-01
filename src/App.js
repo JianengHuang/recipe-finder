@@ -10,7 +10,8 @@ const App = () => {
   const [recipes, setRecipes] = useState([]);
   const [alert, setAlert] = useState('Enter the ingredients you want to use: ');
   const [defaultShow, setDefaultShow] = useState(false);
-  const [maxPrepTime, setMaxPrepTime] = useState();
+  const [maxPrepTime, setMaxPrepTime] = useState('');
+  const [time, setTime] = useState('');
   const [diet, setDiet] = useState({
     balanced: false,
     highFiber: false,
@@ -29,14 +30,30 @@ const App = () => {
     setInputField(values);
   };
 
+  const handleChangeTime = (event) => {
+    setMaxPrepTime(event.target.value);
+  }
+
   const handleChangeDiet = (camelCaseName) => {
     switch (camelCaseName) {
-      case 'balanced': setDiet({ ...diet, balanced: !balanced }); break;
-      case 'highFiber': setDiet({ ...diet, highFiber: !highFiber }); break;
-      case 'highProtein': setDiet({ ...diet, highProtein: !highProtein }); break;
-      case 'lowCarb': setDiet({ ...diet, lowCarb: !lowCarb }); break;
-      case 'lowFat': setDiet({ ...diet, lowFat: !lowFat }); break;
-      case 'lowSodium': setDiet({ ...diet, lowSodium: !lowSodium }); break;
+      case 'balanced':
+        setDiet({ ...diet, balanced: !balanced });
+        break;
+      case 'highFiber':
+        setDiet({ ...diet, highFiber: !highFiber });
+        break;
+      case 'highProtein':
+        setDiet({ ...diet, highProtein: !highProtein });
+        break;
+      case 'lowCarb':
+        setDiet({ ...diet, lowCarb: !lowCarb });
+        break;
+      case 'lowFat':
+        setDiet({ ...diet, lowFat: !lowFat });
+        break;
+      case 'lowSodium':
+        setDiet({ ...diet, lowSodium: !lowSodium });
+        break;
     }
   };
 
@@ -68,6 +85,7 @@ const App = () => {
   };
 
   const handleSubmit = () => {
+    setTime(`&time=${maxPrepTime}`);
     dietString = '';
     for (let x in diet) {
       if (eval(x)) {
@@ -89,6 +107,7 @@ const App = () => {
             break;
         }
         dietString += `&diet=${x}`;
+        console.log(dietString);
       }
     }
   };
@@ -97,7 +116,7 @@ const App = () => {
     const API_ID = process.env.REACT_APP_API_ID;
     const API_KEY = process.env.REACT_APP_API_KEY;
     const deviation = '2-3';
-    const url = `https://api.edamam.com/api/recipes/v2?q=${ingredients}&ingr=${deviation}&app_key=${API_KEY}${dietString}&type=public${maxPrepTime}&app_id=${API_ID}&beta=true`;
+    const url = `https://api.edamam.com/api/recipes/v2?q=${ingredients}&ingr=${deviation}&app_key=${API_KEY}${dietString}&type=public${time}&app_id=${API_ID}&beta=true`;
     const result = await Axios.get(url).catch(function (error) {
       console.log(error);
     });
@@ -143,18 +162,26 @@ const App = () => {
       </div>
       <div className='Advanced-Filter'>
         <h2>Advanced Filter (Optional)</h2>
+        <hr />
+        <form className='time-form'>
+          <h3>Max. Preparation Time (minutes)</h3>
+          <input
+            type='number'
+            placeholder='example: 30'
+            value={maxPrepTime}
+            onInput={(event) => handleChangeTime(event)}
+          />
+        </form>
         <form className='diet-form'>
           <h3 className='filter-tag'>Diet</h3>
-          {DietData.map((dietInfo) => {
-            const { name, camelCaseName, boolean } = dietInfo;
+          {DietData.map((dietInfo, index) => {
+            const { name, camelCaseName } = dietInfo;
             return (
-              <label>
+              <label key={index}>
                 <input
                   type='checkbox'
                   name={name}
-                  onChange={() =>
-                    handleChangeDiet(camelCaseName)
-                  }
+                  onChange={() => handleChangeDiet(camelCaseName)}
                 ></input>
                 {dietInfo.name}
               </label>
