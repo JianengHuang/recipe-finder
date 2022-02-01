@@ -2,22 +2,26 @@ const DietData = [
   {
     name: 'balanced',
     camelCaseName: 'balanced',
-    boolean: false
   },
   {
     name: 'high-fiber',
     camelCaseName: 'highFiber',
-    boolean: false
   },
   {
     name: 'high-protein',
     camelCaseName: 'highProtein',
-    boolean: false
   },
   {
     name: 'low-carb',
     camelCaseName: 'lowCarb',
-    boolean: false
+  },
+  {
+    name: 'low-fat',
+    camelCaseName: 'lowFat',
+  },
+  {
+    name: 'low-sodium',
+    camelCaseName: 'lowSodium',
   },
 ];
 

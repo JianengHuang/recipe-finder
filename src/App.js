@@ -3,13 +3,14 @@ import Axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import './App.css';
 import Recipe from './components/Recipe';
-// import DietData from './components/DietData';
+import DietData from './components/DietData';
 
 const App = () => {
   const [inputField, setInputField] = useState([{ ingredient: '' }]);
   const [recipes, setRecipes] = useState([]);
   const [alert, setAlert] = useState('Enter the ingredients you want to use: ');
   const [defaultShow, setDefaultShow] = useState(false);
+  const [maxPrepTime, setMaxPrepTime] = useState();
   const [diet, setDiet] = useState({
     balanced: false,
     highFiber: false,
@@ -19,6 +20,7 @@ const App = () => {
     lowSodium: false,
   });
   let dietString = '';
+
   const { balanced, highFiber, highProtein, lowCarb, lowFat, lowSodium } = diet;
 
   const handleChangeInput = (index, event) => {
@@ -27,9 +29,16 @@ const App = () => {
     setInputField(values);
   };
 
-  // const handleChangeDiet = (camelCaseName) => {
-  //   setDiet({ ...diet, camelCaseName: !camelCaseName });
-  // };
+  const handleChangeDiet = (camelCaseName) => {
+    switch (camelCaseName) {
+      case 'balanced': setDiet({ ...diet, balanced: !balanced }); break;
+      case 'highFiber': setDiet({ ...diet, highFiber: !highFiber }); break;
+      case 'highProtein': setDiet({ ...diet, highProtein: !highProtein }); break;
+      case 'lowCarb': setDiet({ ...diet, lowCarb: !lowCarb }); break;
+      case 'lowFat': setDiet({ ...diet, lowFat: !lowFat }); break;
+      case 'lowSodium': setDiet({ ...diet, lowSodium: !lowSodium }); break;
+    }
+  };
 
   const handleSearch = (event) => {
     if (inputField.length > 0 && inputField[0].ingredient !== '') {
@@ -82,14 +91,13 @@ const App = () => {
         dietString += `&diet=${x}`;
       }
     }
-    console.log(dietString);
   };
 
   const getData = async (ingredients) => {
     const API_ID = process.env.REACT_APP_API_ID;
     const API_KEY = process.env.REACT_APP_API_KEY;
     const deviation = '2-3';
-    const url = `https://api.edamam.com/api/recipes/v2?q=${ingredients}&ingr=${deviation}&app_key=${API_KEY}${dietString}&type=public&app_id=${API_ID}&beta=true`;
+    const url = `https://api.edamam.com/api/recipes/v2?q=${ingredients}&ingr=${deviation}&app_key=${API_KEY}${dietString}&type=public${maxPrepTime}&app_id=${API_ID}&beta=true`;
     const result = await Axios.get(url).catch(function (error) {
       console.log(error);
     });
@@ -137,7 +145,7 @@ const App = () => {
         <h2>Advanced Filter (Optional)</h2>
         <form className='diet-form'>
           <h3 className='filter-tag'>Diet</h3>
-          {/* {DietData.map((dietInfo) => {
+          {DietData.map((dietInfo) => {
             const { name, camelCaseName, boolean } = dietInfo;
             return (
               <label>
@@ -151,55 +159,7 @@ const App = () => {
                 {dietInfo.name}
               </label>
             );
-          })} */}
-          <label>
-            <input
-              type='checkbox'
-              name='balanced'
-              onChange={() => setDiet({ ...diet, balanced: !balanced })}
-            ></input>
-            Balanced
-          </label>
-          <label>
-            <input
-              type='checkbox'
-              name='high-fiber'
-              onChange={() => setDiet({ ...diet, highFiber: !highFiber })}
-            ></input>
-            High-Fiber
-          </label>
-          <label>
-            <input
-              type='checkbox'
-              name='high-protein'
-              onChange={() => setDiet({ ...diet, highProtein: !highProtein })}
-            ></input>
-            High-Protein
-          </label>
-          <label>
-            <input
-              type='checkbox'
-              name='low-carb'
-              onChange={() => setDiet({ ...diet, lowCarb: !lowCarb })}
-            ></input>
-            Low-Carb
-          </label>
-          <label>
-            <input
-              type='checkbox'
-              name='low-fat'
-              onChange={() => setDiet({ ...diet, lowFat: !lowFat })}
-            ></input>
-            Low-Fat
-          </label>
-          <label>
-            <input
-              type='checkbox'
-              name='low-sodium'
-              onChange={() => setDiet({ ...diet, lowSodium: !lowSodium })}
-            ></input>
-            Low-Sodium
-          </label>
+          })}
         </form>
         <button onClick={handleSubmit}>Apply Changes</button>
       </div>
