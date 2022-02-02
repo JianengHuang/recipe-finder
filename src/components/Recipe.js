@@ -28,7 +28,7 @@ const Recipe = (props) => {
           {totalTime || 'no preparation time registered'}
           {totalTime != 0 && ' minutes'}
         </p>
-        {'Cautions:' && cautions}
+        {/* {'Cautions:' && cautions} */}
         <button onClick={() => setShow(!show)}>Ingredients</button>
         <a href={url} target='_blank' useref='noopener noreferrer'>
           <button>Make It!</button>
