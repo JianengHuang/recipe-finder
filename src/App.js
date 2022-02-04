@@ -6,6 +6,11 @@ import Recipe from './components/Recipe';
 import DietData from './components/DietData';
 import Header from './components/Header';
 import Container from './components/styles/Container.styled';
+import {
+  StyledButton,
+  StyledInput,
+} from './components/styles/Button.styled.js';
+import GlobalStyles from './components/styles/Global';
 
 const App = () => {
   const [inputField, setInputField] = useState([{ ingredient: '' }]);
@@ -230,7 +235,7 @@ const App = () => {
             {inputField.map((inputField, index) => {
               return (
                 <div key={index} className='input'>
-                  <input
+                  <StyledInput
                     type='text'
                     name='ingredient'
                     placeholder='Add Ingredient'
@@ -249,15 +254,15 @@ const App = () => {
               );
             })}
             <div className='search-button'>
-              <button onClick={(event) => addElement(event)}>
+              <StyledButton onClick={(event) => addElement(event)}>
                 Add Ingredient
-              </button>
-              <button className='submit-btn' onClick={handleSearch}>
+              </StyledButton>
+              <StyledButton className='submit-btn' onClick={handleSearch}>
                 Search
-              </button>
-              <button onClick={(event) => removeAllElements(event)}>
+              </StyledButton>
+              <StyledButton onClick={(event) => removeAllElements(event)}>
                 Clear all Ingredients
-              </button>
+              </StyledButton>
             </div>
           </form>
         </div>
@@ -322,7 +327,7 @@ const App = () => {
               );
             })}
           </form>
-          <button onClick={handleSubmit}>Apply Changes</button>
+          <StyledButton onClick={handleSubmit}>Apply Changes</StyledButton>
         </div>
       </Container>
       <hr />
