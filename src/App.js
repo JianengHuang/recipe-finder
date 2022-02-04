@@ -4,6 +4,8 @@ import { v4 as uuidv4 } from 'uuid';
 import './App.css';
 import Recipe from './components/Recipe';
 import DietData from './components/DietData';
+import Header from './components/Header';
+import Container from './components/styles/Container.styled';
 
 const App = () => {
   const [inputField, setInputField] = useState([{ ingredient: '' }]);
@@ -219,107 +221,111 @@ const App = () => {
 
   return (
     <>
-      <div className='container'>
-        <form>
-          <h2>Enter the ingredients you want to use:</h2>
-          <h3 className='modal'>{alert}</h3>
-          {inputField.map((inputField, index) => {
-            return (
-              <div key={index} className='input'>
-                <input
-                  type='text'
-                  name='ingredient'
-                  placeholder='Add Ingredient'
-                  autoComplete='off'
-                  value={inputField.ingredient}
-                  onChange={(event) => handleChangeInput(index, event)}
-                  onFocus={() => addElementIfNeeded(index)}
-                />
-                <button
-                  className='delete-btn'
-                  onClick={(event) => removeElement(event, index)}
-                >
-                  x
-                </button>
-              </div>
-            );
-          })}
-          <div className='search-button'>
-            <button onClick={(event) => addElement(event)}>
-              Add Ingredient
-            </button>
-            <button className='submit-btn' onClick={handleSearch}>
-              Search
-            </button>
-            <button onClick={(event) => removeAllElements(event)}>
-              Clear all Ingredients
-            </button>
-          </div>
-        </form>
-      </div>
-      <div className='Advanced-Filter'>
-        <h2>Advanced Filter (Optional)</h2>
-        <hr />
-        <form className='time-form'>
-          <h3 className='filter-tag'>Maximum Preparation Time (minutes)</h3>
-          <input
-            type='number'
-            placeholder='example: 30'
-            value={maxPrepTime}
-            onInput={(event) => setMaxPrepTime(event.target.value)}
-          />
-        </form>
-        <form className='calories-form'>
-          <h3 className='filter-tag'>Calories Range per Serving (Min-Max)</h3>
-          <input
-            type='text'
-            placeholder='100-300'
-            value={caloriesRange}
-            onInput={(event) => setCaloriesRange(event.target.value)}
-          />
-        </form>
-        <form className='meal-type'>
-          <h3 className='filter-tag'>Meal Type</h3>
-          {Object.keys(mealType).map((item, index) => (
-            <label key={index}>
-              <input
-                type='checkbox'
-                name={item}
-                onChange={() => handleChangeMealType(item)}
-              />
-              {item}
-            </label>
-          ))}
-        </form>
-        <form className='deviation'>
-          <h3 className='filter-tag'>Number of ingredients (Min-Max)</h3>
-          <label>
+      <Header />
+      <Container>
+        <div>
+          <form>
+            <h2>Enter the ingredients you want to use:</h2>
+            <h3 className='modal'>{alert}</h3>
+            {inputField.map((inputField, index) => {
+              return (
+                <div key={index} className='input'>
+                  <input
+                    type='text'
+                    name='ingredient'
+                    placeholder='Add Ingredient'
+                    autoComplete='off'
+                    value={inputField.ingredient}
+                    onChange={(event) => handleChangeInput(index, event)}
+                    onFocus={() => addElementIfNeeded(index)}
+                  />
+                  <button
+                    className='delete-btn'
+                    onClick={(event) => removeElement(event, index)}
+                  >
+                    x
+                  </button>
+                </div>
+              );
+            })}
+            <div className='search-button'>
+              <button onClick={(event) => addElement(event)}>
+                Add Ingredient
+              </button>
+              <button className='submit-btn' onClick={handleSearch}>
+                Search
+              </button>
+              <button onClick={(event) => removeAllElements(event)}>
+                Clear all Ingredients
+              </button>
+            </div>
+          </form>
+        </div>
+        <div className='Advanced-Filter'>
+          <h2>Advanced Filter (Optional)</h2>
+          <hr />
+          <form className='time-form'>
+            <h3 className='filter-tag'>Maximum Preparation Time (minutes)</h3>
+            <input
+              type='number'
+              placeholder='example: 30'
+              value={maxPrepTime}
+              onInput={(event) => setMaxPrepTime(event.target.value)}
+            />
+          </form>
+          <form className='calories-form'>
+            <h3 className='filter-tag'>Calories Range per Serving (Min-Max)</h3>
             <input
               type='text'
-              placeholder='2-5'
-              value={deviationRange}
-              onInput={(event) => setDeviationRange(event.target.value)}
+              placeholder='100-300'
+              value={caloriesRange}
+              onInput={(event) => setCaloriesRange(event.target.value)}
             />
-          </label>
-        </form>
-        <form className='diet-form'>
-          <h3 className='filter-tag'>Diet</h3>
-          {DietData.map((dietInfo, index) => {
-            const { name, camelCaseName } = dietInfo;
-            return (
+          </form>
+          <form className='meal-type'>
+            <h3 className='filter-tag'>Meal Type</h3>
+            {Object.keys(mealType).map((item, index) => (
               <label key={index}>
                 <input
                   type='checkbox'
-                  name={name}
-                  onChange={() => handleChangeDiet(camelCaseName)}
-                ></input>
-                {dietInfo.name}
+                  name={item}
+                  onChange={() => handleChangeMealType(item)}
+                />
+                {item}
               </label>
-            );
-          })}
-        </form>
-        <button onClick={handleSubmit}>Apply Changes</button>
-      </div>
+            ))}
+          </form>
+          <form className='deviation'>
+            <h3 className='filter-tag'>Number of ingredients (Min-Max)</h3>
+            <label>
+              <input
+                type='text'
+                placeholder='2-5'
+                value={deviationRange}
+                onInput={(event) => setDeviationRange(event.target.value)}
+              />
+            </label>
+          </form>
+          <form className='diet-form'>
+            <h3 className='filter-tag'>Diet</h3>
+            {DietData.map((dietInfo, index) => {
+              const { name, camelCaseName } = dietInfo;
+              return (
+                <label key={index}>
+                  <input
+                    type='checkbox'
+                    name={name}
+                    onChange={() => handleChangeDiet(camelCaseName)}
+                  ></input>
+                  {dietInfo.name}
+                </label>
+              );
+            })}
+          </form>
+          <button onClick={handleSubmit}>Apply Changes</button>
+        </div>
+      </Container>
+      <hr />
       <div className='recipe-options'>
         <button
           onClick={() => {
