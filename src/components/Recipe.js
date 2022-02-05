@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import RecipeDetails from './RecipeDetails';
-import './Recipe.css';
+import StyledRecipe from './styles/Recipe.styled';
+import { StyledButton } from './styles/Button.styled';
 
 const Recipe = (props) => {
   const [show, setShow] = useState(props.defaultShow);
@@ -10,7 +11,7 @@ const Recipe = (props) => {
     url,
     ingredients,
     calories,
-    cautions,
+    // cautions,
     cuisineType,
     totalTime,
     shareAs,
@@ -18,26 +19,26 @@ const Recipe = (props) => {
 
   return (
     <>
-      <div className='recipe'>
+      <StyledRecipe>
         <h2>{label}</h2>
         <img src={image} alt={label} />
         <p>Cuisine Type: {cuisineType}</p>
         <p className='calories'>{Math.floor(calories)} kcal</p>
         <p>
-          {totalTime != 0 && 'Prepration Time: '}
+          {totalTime !== 0 && 'Prepration Time: '}
           {totalTime || 'no preparation time registered'}
-          {totalTime != 0 && ' minutes'}
+          {totalTime !== 0 && ' minutes'}
         </p>
         {/* {'Cautions:' && cautions} */}
-        <button onClick={() => setShow(!show)}>Ingredients</button>
-        <a href={url} target='_blank' useref='noopener noreferrer'>
-          <button>Make It!</button>
+        <StyledButton onClick={() => setShow(!show)}>Ingredients</StyledButton>
+        <a href={url} target='_blank' rel='noopener noreferrer'>
+          <StyledButton>Make It!</StyledButton>
         </a>
-        <a href={shareAs} target='_blank' useref='noopener noreferrer'>
-          <button>Nutrients</button>
+        <a href={shareAs} target='_blank' rel='noopener noreferrer'>
+          <StyledButton>Nutrients</StyledButton>
         </a>
         {show && <RecipeDetails ingredients={ingredients} />}
-      </div>
+      </StyledRecipe>
     </>
   );
 };

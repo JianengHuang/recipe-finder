@@ -8,4 +8,11 @@ export const StyledHeader = styled.header`
   p {
     font-size: 1rem;
   }
+
+  @media (max-width: 1000px) {
+    font-size: 1.5rem;
+    img {
+      width: 100%;
+    }
+  }
 `;

@@ -11,6 +11,12 @@ import {
   StyledInput,
 } from './components/styles/Button.styled.js';
 import GlobalStyles from './components/styles/Global';
+import StyledModal from './components/styles/Modal.styled';
+import {
+  StyledFilter,
+  StyledCheckbox,
+  StyledLabel,
+} from './components/styles/Checkbox.styled';
 
 const App = () => {
   const [inputField, setInputField] = useState([{ ingredient: '' }]);
@@ -42,6 +48,7 @@ const App = () => {
   let mealTypeString = '';
   const [deviationRange, setDeviationRange] = useState('');
   const [deviation, setDeviation] = useState('');
+  const [show, setShow] = useState(false);
 
   const handleChangeInput = (index, event) => {
     const values = [...inputField];
@@ -226,12 +233,13 @@ const App = () => {
 
   return (
     <>
+      <GlobalStyles />
       <Header />
-      <Container>
-        <div>
+      <>
+        <Container>
           <form>
             <h2>Enter the ingredients you want to use:</h2>
-            <h3 className='modal'>{alert}</h3>
+            <StyledModal className='modal'>{alert}</StyledModal>
             {inputField.map((inputField, index) => {
               return (
                 <div key={index} className='input'>
@@ -244,106 +252,118 @@ const App = () => {
                     onChange={(event) => handleChangeInput(index, event)}
                     onFocus={() => addElementIfNeeded(index)}
                   />
-                  <button
-                    className='delete-btn'
+                  <StyledButton
+                    className='delete-button'
                     onClick={(event) => removeElement(event, index)}
                   >
                     x
-                  </button>
+                  </StyledButton>
                 </div>
               );
             })}
-            <div className='search-button'>
-              <StyledButton onClick={(event) => addElement(event)}>
+            <div className='main-buttons'>
+              {/* <StyledButton onClick={(event) => addElement(event)}>
                 Add Ingredient
-              </StyledButton>
-              <StyledButton className='submit-btn' onClick={handleSearch}>
-                Search
-              </StyledButton>
+              </StyledButton> */}
               <StyledButton onClick={(event) => removeAllElements(event)}>
                 Clear all Ingredients
               </StyledButton>
             </div>
           </form>
-        </div>
-        <div className='Advanced-Filter'>
+        </Container>
+        <Container className='Advanced-Filter'>
           <h2>Advanced Filter (Optional)</h2>
+          <StyledButton className='open-filter' onClick={() => setShow(!show)}>
+            ▼
+          </StyledButton>
           <hr />
-          <form className='time-form'>
-            <h3 className='filter-tag'>Maximum Preparation Time (minutes)</h3>
-            <input
-              type='number'
-              placeholder='example: 30'
-              value={maxPrepTime}
-              onInput={(event) => setMaxPrepTime(event.target.value)}
-            />
-          </form>
-          <form className='calories-form'>
-            <h3 className='filter-tag'>Calories Range per Serving (Min-Max)</h3>
-            <input
-              type='text'
-              placeholder='100-300'
-              value={caloriesRange}
-              onInput={(event) => setCaloriesRange(event.target.value)}
-            />
-          </form>
-          <form className='meal-type'>
-            <h3 className='filter-tag'>Meal Type</h3>
-            {Object.keys(mealType).map((item, index) => (
-              <label key={index}>
-                <input
-                  type='checkbox'
-                  name={item}
-                  onChange={() => handleChangeMealType(item)}
+          {show && (
+            <Container>
+              <form className='time-form'>
+                <h3 className='filter-tag'>
+                  Maximum Preparation Time (minutes)
+                </h3>
+                <StyledInput
+                  type='number'
+                  placeholder='example: 30'
+                  value={maxPrepTime}
+                  onInput={(event) => setMaxPrepTime(event.target.value)}
                 />
-                {item}
-              </label>
-            ))}
-          </form>
-          <form className='deviation'>
-            <h3 className='filter-tag'>Number of ingredients (Min-Max)</h3>
-            <label>
-              <input
-                type='text'
-                placeholder='2-5'
-                value={deviationRange}
-                onInput={(event) => setDeviationRange(event.target.value)}
-              />
-            </label>
-          </form>
-          <form className='diet-form'>
-            <h3 className='filter-tag'>Diet</h3>
-            {DietData.map((dietInfo, index) => {
-              const { name, camelCaseName } = dietInfo;
-              return (
-                <label key={index}>
-                  <input
-                    type='checkbox'
-                    name={name}
-                    onChange={() => handleChangeDiet(camelCaseName)}
-                  ></input>
-                  {dietInfo.name}
-                </label>
-              );
-            })}
-          </form>
-          <StyledButton onClick={handleSubmit}>Apply Changes</StyledButton>
-        </div>
-      </Container>
+              </form>
+              <form className='calories-form'>
+                <h3 className='filter-tag'>
+                  Calories Range per Serving (Min-Max)
+                </h3>
+                <StyledInput
+                  type='text'
+                  placeholder='100-300'
+                  value={caloriesRange}
+                  onInput={(event) => setCaloriesRange(event.target.value)}
+                />
+              </form>
+              <form className='deviation'>
+                <h3 className='filter-tag'>Number of ingredients (Min-Max)</h3>
+                <StyledInput
+                  type='text'
+                  placeholder='2-5'
+                  value={deviationRange}
+                  onInput={(event) => setDeviationRange(event.target.value)}
+                />
+              </form>
+              <form className='meal-type'>
+                <h3 className='filter-tag'>Meal Type</h3>
+                <StyledFilter>
+                  {Object.keys(mealType).map((item, index) => (
+                    <StyledLabel key={index}>
+                        <StyledCheckbox
+                          type='checkbox'
+                          name={item}
+                          onChange={() => handleChangeMealType(item)}
+                        />
+                        {item}
+                    </StyledLabel>
+                  ))}
+                </StyledFilter>
+              </form>
+              <form className='diet-form'>
+                <h3 className='filter-tag'>Diet</h3>
+                <StyledFilter>
+                  {DietData.map((dietInfo, index) => {
+                    const { name, camelCaseName } = dietInfo;
+                    return (
+                      <StyledLabel key={index}>
+                        <StyledCheckbox
+                          type='checkbox'
+                          name={name}
+                          onChange={() => handleChangeDiet(camelCaseName)}
+                        ></StyledCheckbox>
+                        {dietInfo.name}
+                      </StyledLabel>
+                    );
+                  })}
+                </StyledFilter>
+              </form>
+              <StyledButton onClick={handleSubmit}>Apply Changes</StyledButton>
+            </Container>
+          )}
+        </Container>
+      </>
+      <StyledButton className='search-button' onClick={handleSearch}>
+        Search
+      </StyledButton>
       <hr />
-      <div className='recipe-options'>
-        <button
-          onClick={() => {
-            handleSearch();
-          }}
-        >
-          Refresh Recipes
-        </button>
-        <label>
-          <input type='checkbox' onClick={() => setDefaultShow(!defaultShow)} />
-          Default Show Ingredients
-        </label>
-      </div>
+      <label>
+        <input type='checkbox' onClick={() => setDefaultShow(!defaultShow)} />
+        Default Show Ingredients
+      </label>
+      <StyledButton
+        className='refresh-button'
+        onClick={() => {
+          handleSearch();
+        }}
+      >
+        Refresh Recipes
+      </StyledButton>
       <div className='recipes'>
         {recipes !== [] &&
           recipes.map((recipe) => (
