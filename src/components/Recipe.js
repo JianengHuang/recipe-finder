@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import RecipeDetails from './RecipeDetails';
-import StyledRecipe from './styles/Recipe.styled';
+import { StyledRecipeItem } from './styles/Recipe.styled';
 import { StyledButton } from './styles/Button.styled';
 
 const Recipe = (props) => {
@@ -19,7 +19,7 @@ const Recipe = (props) => {
 
   return (
     <>
-      <StyledRecipe>
+      <StyledRecipeItem>
         <h2>{label}</h2>
         <img src={image} alt={label} />
         <p>Cuisine Type: {cuisineType}</p>
@@ -38,7 +38,7 @@ const Recipe = (props) => {
           <StyledButton>Nutrients</StyledButton>
         </a>
         {show && <RecipeDetails ingredients={ingredients} />}
-      </StyledRecipe>
+      </StyledRecipeItem>
     </>
   );
 };

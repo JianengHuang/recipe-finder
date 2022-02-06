@@ -17,6 +17,8 @@ import {
   StyledCheckbox,
   StyledLabel,
 } from './components/styles/Checkbox.styled';
+import { StyledRecipe } from './components/styles/Recipe.styled';
+import ScrollToTop from './components/ScrollToTop';
 
 const App = () => {
   const [inputField, setInputField] = useState([{ ingredient: '' }]);
@@ -315,12 +317,12 @@ const App = () => {
                 <StyledFilter>
                   {Object.keys(mealType).map((item, index) => (
                     <StyledLabel key={index}>
-                        <StyledCheckbox
-                          type='checkbox'
-                          name={item}
-                          onChange={() => handleChangeMealType(item)}
-                        />
-                        {item}
+                      <StyledCheckbox
+                        type='checkbox'
+                        name={item}
+                        onChange={() => handleChangeMealType(item)}
+                      />
+                      {item}
                     </StyledLabel>
                   ))}
                 </StyledFilter>
@@ -364,12 +366,13 @@ const App = () => {
       >
         Refresh Recipes
       </StyledButton>
-      <div className='recipes'>
+      <StyledRecipe className='recipes'>
         {recipes !== [] &&
           recipes.map((recipe) => (
             <Recipe key={uuidv4()} recipe={recipe} defaultShow={defaultShow} />
           ))}
-      </div>
+      </StyledRecipe>
+      <ScrollToTop />
     </>
   );
 };
