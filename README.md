@@ -1,6 +1,10 @@
-This project main focus is recommending recipes based on ingredients entered by the user, this way left-overs are not wasted
+This project main focus is suggesting recipes based on ingredients entered by the user, this way left-overs are not wasted
 
 Technologies used:
 
-React.js
+Axios
 Edamam API
+Dotenv
+React.js
+Styled-Components
+Uuid
